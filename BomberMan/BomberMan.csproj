@@ -83,5 +83,8 @@
   <ItemGroup>
     <None Include="Resources\Short_triumphal_fanfare-John_Stracke-815794903 %281%29.wav" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Bomb_Exploding-Sound_Explorer-68256487.wav" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

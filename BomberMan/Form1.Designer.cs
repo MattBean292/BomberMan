@@ -36,6 +36,7 @@
             this.exitButton = new System.Windows.Forms.Button();
             this.startButton = new System.Windows.Forms.Button();
             this.arcadeButton = new System.Windows.Forms.Button();
+            this.TitleLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // gameTimer
@@ -107,12 +108,23 @@
             this.arcadeButton.UseVisualStyleBackColor = true;
             this.arcadeButton.Click += new System.EventHandler(this.arcadeButton_Click);
             // 
+            // TitleLabel
+            // 
+            this.TitleLabel.Font = new System.Drawing.Font("Arial", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TitleLabel.ForeColor = System.Drawing.Color.Red;
+            this.TitleLabel.Location = new System.Drawing.Point(191, 9);
+            this.TitleLabel.Name = "TitleLabel";
+            this.TitleLabel.Size = new System.Drawing.Size(148, 53);
+            this.TitleLabel.TabIndex = 6;
+            this.TitleLabel.Text = "BOMBERMAN";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.ClientSize = new System.Drawing.Size(550, 550);
+            this.Controls.Add(this.TitleLabel);
             this.Controls.Add(this.arcadeButton);
             this.Controls.Add(this.startButton);
             this.Controls.Add(this.exitButton);
@@ -140,6 +152,7 @@
         private System.Windows.Forms.Button exitButton;
         private System.Windows.Forms.Button startButton;
         private System.Windows.Forms.Button arcadeButton;
+        private System.Windows.Forms.Label TitleLabel;
     }
 }
 

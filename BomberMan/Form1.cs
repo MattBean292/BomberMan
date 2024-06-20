@@ -28,7 +28,7 @@ namespace BomberMan
         Rectangle sightVert = new Rectangle(50, 0, 50, 150);
         Rectangle sightHort2 = new Rectangle(400, 450, 150, 50);
         Rectangle sightVert2 = new Rectangle(450, 400, 50, 150);
-        int playerspeed = 2;
+        int playerspeed = 4;
 
         bool wPressed = false;
         bool sPressed = false;
@@ -42,6 +42,7 @@ namespace BomberMan
         bool spacePressed = false;
         bool escPressed = false;
         bool pPressed = false;
+        bool lPressed = false;
 
         int x1;
         int y1;
@@ -76,17 +77,13 @@ namespace BomberMan
         SolidBrush redBrush = new SolidBrush(Color.Red);
         SolidBrush purpBrush = new SolidBrush(Color.Purple);
 
-        SoundPlayer victory = new SoundPlayer(Properties.Resources.Victory);
+        SoundPlayer victorySound = new SoundPlayer(Properties.Resources.Victory_Sound);
+        SoundPlayer bombsSound = new SoundPlayer(Properties.Resources.Bombs_Sound);
         public Form1()
         {
             InitializeComponent();
             player1pointLabel.Text = "";
             player2pointLabel.Text = "";
-            /*startButton.Enabled = false;
-            startButton.Visible = false;
-            exitButton.Enabled = false;
-            exitButton.Visible = false;       
-            initializeGame(); */
         }
 
         private void gameTimer_Tick(object sender, EventArgs e)
@@ -103,43 +100,35 @@ namespace BomberMan
             // breakwalls 
             if (breakWalls.Count == 0)
             {
-                check = 0;
-                check2 = 0;
-                bombcheck = 0;
-                bombcheck2 = 0;
-                bombs.Clear();
-                bombtime.Clear();
-                bombplayer.Clear();
-                explosion.Clear();
                 for (int i = 0; i < 22; i++)
                 {
                     breakwallsX = randGen.Next(1, 10);
                     breakwallsY = randGen.Next(1, 10);
 
                     Rectangle breakwalls = new Rectangle(breakwallsX * 50 + 5, breakwallsY * 50 + 5, 40, 40);
-                    for (int
+                    /* for (int j = 0; j < breakWalls.Count; j++)
+                     {
+                         while (breakwalls.IntersectsWith(breakWalls[j]))
+                         {
+                             breakwallsX = randGen.Next(1, 10);
+                             breakwallsY = randGen.Next(1, 10);
 
-
-                        j = 0; j < breakWalls.Count; j++)
+                             breakwalls = new Rectangle(breakwallsX * 50 + 5, breakwallsY * 50 + 5, 40, 40);
+                             j = 0;
+                         }
+                     } */
+                    for (int k = 0; k < breakWalls.Count; k++)
                     {
-                        while (breakwalls.IntersectsWith(breakWalls[j]))
+                        for (int j = 0; j < walls.Count; j++)
                         {
-                            breakwallsX = randGen.Next(1, 10);
-                            breakwallsY = randGen.Next(1, 10);
+                            while (breakwalls.IntersectsWith(walls[j]) || breakwalls.IntersectsWith(player1) || breakwalls.IntersectsWith(sightHort) || breakwalls.IntersectsWith(sightVert) || breakwalls.IntersectsWith(sightHort2) || breakwalls.IntersectsWith(sightVert2) || breakwalls.IntersectsWith(breakWalls[k]))
+                            {
+                                breakwallsX = randGen.Next(1, 10);
+                                breakwallsY = randGen.Next(1, 10);
 
-                            breakwalls = new Rectangle(breakwallsX * 50 + 5, breakwallsY * 50 + 5, 40, 40);
-                            j = 0;
-                        }
-                    }
-                    for (int j = 0; j < walls.Count; j++)
-                    {
-                        while (breakwalls.IntersectsWith(walls[j]) || breakwalls.IntersectsWith(player1) || breakWalls[j].IntersectsWith(sightHort) || breakWalls[j].IntersectsWith(sightVert))
-                        {
-                            breakwallsX = randGen.Next(1, 10);
-                            breakwallsY = randGen.Next(1, 10);
-
-                            breakwalls = new Rectangle(breakwallsX * 50 + 5, breakwallsY * 50 + 5, 40, 40);
-                            j = 0;
+                                breakwalls = new Rectangle(breakwallsX * 50 + 5, breakwallsY * 50 + 5, 40, 40);
+                                j = 0;
+                            }
                         }
                     }
                     breakWalls.Add(breakwalls);
@@ -149,6 +138,13 @@ namespace BomberMan
 
 
             // controls        
+            if (lPressed == true)
+            {
+                for (int i = 0; i < breakWalls.Count; i++)
+                {
+                    breakWalls.RemoveAt(i);
+                }
+            }
             if (playerdead1 == false)
             {
                 if (wPressed == true && player1.Y > 0)
@@ -221,7 +217,7 @@ namespace BomberMan
                     {
                         if (bombplayer[i] == "p1")
                         {
-                            check++;
+                            check++;                           
                         }
                     }
                 }
@@ -333,6 +329,7 @@ namespace BomberMan
             {
                 if (timer - bombtime[i] == 100)
                 {
+                    bombsSound.Play();
                     for (int j = 0; j <= 9; j++)
                     {
                         explosionplayer.Add(bombplayer[i]);
@@ -423,15 +420,20 @@ namespace BomberMan
                 }
 
 
-                if (timer - bombtime[i] == 150)
-                {
-
+                if (timer - bombtime[i] >= 150)
+                {                   
                     explosion.RemoveRange(i, i + 9);
                     explosionplayer.RemoveRange(i, i + 9);
-                    check = 0;
-                    check2 = 0;
-                    bombcheck = 0;
-                    bombcheck2 = 0;
+                    if (bombplayer[i] == "p1")
+                    {
+                        check = 0;
+                        bombcheck = 0;
+                    }
+                    else
+                    {
+                        check2 = 0;
+                        bombcheck2 = 0;
+                    }                                      
                     bombs.RemoveAt(i);
                     bombtime.RemoveAt(i);
                     bombplayer.RemoveAt(i);
@@ -458,6 +460,7 @@ namespace BomberMan
 
                             player1points = player1points + 300;
                             breakWalls.RemoveAt(j);
+                            j--;
                             explosionplayer[i] = "p3";
 
                         }
@@ -466,6 +469,7 @@ namespace BomberMan
 
                             player2points = player2points + 300;
                             breakWalls.RemoveAt(j);
+                            j--;
                             explosionplayer[i] = "p3";
                         }
                         if (player1.IntersectsWith(explosion[i]))
@@ -544,6 +548,7 @@ namespace BomberMan
 
                             player1points = player1points + 300;
                             breakWalls.RemoveAt(j);
+                            j--;
                             explosionplayer[i] = "p3";
 
                         }
@@ -585,7 +590,8 @@ namespace BomberMan
         }
         public void initializeGame()
         {
-            victory.Stop();
+            victorySound.Stop();
+            bombsSound.Stop();
             player1points = 0;
             player2points = 0;
             player1pointLabel.Visible = true;
@@ -678,7 +684,7 @@ namespace BomberMan
         }
         public void EndGame(int player1points, int player2points)
         {
-            victory.Play();
+            victorySound.Play();
             walls.Clear();
             breakWalls.Clear();
             explosion.Clear();
@@ -773,6 +779,9 @@ namespace BomberMan
                 case Keys.P:
                     pPressed = false;
                     break;
+                case Keys.L:
+                    lPressed = false;
+                    break;
             }
 
         }
@@ -817,6 +826,9 @@ namespace BomberMan
                 case Keys.P:
                     pPressed = true;
                     break;
+                        case Keys.L:
+                    lPressed = true;
+                    break;
             }
         }
 
@@ -832,13 +844,27 @@ namespace BomberMan
             }
             for (int i = 0; i < bombs.Count; i++)
             {
-                if (timer % 2 == 0)
+                if (timer - bombtime[i] < 50)
                 {
-                    e.Graphics.FillEllipse(redBrush, bombs[i]);
+                    if (timer % 4 == 0 || timer % 3 == 0)
+                    {
+                        e.Graphics.FillEllipse(redBrush, bombs[i]);
+                    }
+                    else
+                    {
+                        e.Graphics.FillEllipse(whiteBrush, bombs[i]);
+                    }
                 }
                 else
                 {
-                    e.Graphics.FillEllipse(whiteBrush, bombs[i]);
+                    if (timer % 2 == 0)
+                    {
+                        e.Graphics.FillEllipse(redBrush, bombs[i]);
+                    }
+                    else
+                    {
+                        e.Graphics.FillEllipse(whiteBrush, bombs[i]);
+                    }
                 }
             }
             for (int i = 0; i < explosion.Count; i++)
@@ -858,9 +884,9 @@ namespace BomberMan
 
         private void startButton_Click(object sender, EventArgs e)
         {
-
+            TitleLabel.Visible = false;
             initializeGame();
-
+            
         }
 
         private void exitButton_Click(object sender, EventArgs e)
