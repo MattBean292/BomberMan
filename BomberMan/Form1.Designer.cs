@@ -114,7 +114,7 @@
             this.TitleLabel.ForeColor = System.Drawing.Color.Red;
             this.TitleLabel.Location = new System.Drawing.Point(191, 9);
             this.TitleLabel.Name = "TitleLabel";
-            this.TitleLabel.Size = new System.Drawing.Size(148, 53);
+            this.TitleLabel.Size = new System.Drawing.Size(148, 24);
             this.TitleLabel.TabIndex = 6;
             this.TitleLabel.Text = "BOMBERMAN";
             // 

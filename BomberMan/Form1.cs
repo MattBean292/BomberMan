@@ -21,6 +21,7 @@ namespace BomberMan
         List<int> bombtime = new List<int>();
         List<string> bombplayer = new List<string>();
         List<string> explosionplayer = new List<string>();
+        List<bool> check = new List<bool>();
 
         Rectangle player1 = new Rectangle(0, 0, 0, 0);
         Rectangle player2 = new Rectangle(0, 0, 0, 0);
@@ -54,8 +55,8 @@ namespace BomberMan
         int sighty2;
         int breakwallsX;
         int breakwallsY;
-        int check;
-        int check2;
+       // int check;
+       // int check2;
         int bombcheck;
         int bombcheck2;
         int timer;
@@ -182,6 +183,7 @@ namespace BomberMan
                 int bombtick = timer;
                 bombtime.Add(bombtick);
                 bombcheck++;
+                    check.Add(false);
 
             }
         }
@@ -211,17 +213,18 @@ namespace BomberMan
             }
             for (int i = 0; i < bombs.Count; i++)
             {
-                if (!player1.IntersectsWith(bombs[i]) && check == 0)
+                if (!player1.IntersectsWith(bombs[i]) && check[i] == false /*check == 0 */)
                 {
                     if (bombplayer.Count > 0)
                     {
                         if (bombplayer[i] == "p1")
                         {
-                            check++;                           
+                          //  check++;
+                          check[i] = true;
                         }
                     }
                 }
-                if (player1.IntersectsWith(bombs[i]) && check == 1)
+                if (player1.IntersectsWith(bombs[i]) && check[i] == true/*check == 1*/)
                 {
                     player1.Y = y1;
                     player1.X = x1;
@@ -270,6 +273,7 @@ namespace BomberMan
                     int bombtick = timer;
                     bombtime.Add(bombtick);
                     bombcheck2++;
+                    check.Add(false);
                 }
             }
             if (escPressed == true)
@@ -303,17 +307,18 @@ namespace BomberMan
             }
             for (int i = 0; i < bombs.Count; i++)
             {
-                if (!player2.IntersectsWith(bombs[i]) && check2 == 0)
+                if (!player2.IntersectsWith(bombs[i]) && check[i] == false/*check2 == 0 */)
                 {
                     if (bombplayer.Count > 0)
                     {
                         if (bombplayer[i] == "p2")
                         {
-                            check2++;
+                         //   check2++;
+                         check[i] = true;
                         }
                     }
                 }
-                if (player2.IntersectsWith(bombs[i]) && check2 == 1)
+                if (player2.IntersectsWith(bombs[i]) && check[i] == true/*check2 == 1 */)
                 {
                     player2.Y = y2;
                     player2.X = x2;
@@ -426,12 +431,14 @@ namespace BomberMan
                     explosionplayer.RemoveRange(i, i + 9);
                     if (bombplayer[i] == "p1")
                     {
-                        check = 0;
+                        check.RemoveAt(i);
+                       // check = 0;
                         bombcheck = 0;
                     }
                     else
                     {
-                        check2 = 0;
+                        check.RemoveAt(i);
+                        //   check2 = 0;
                         bombcheck2 = 0;
                     }                                      
                     bombs.RemoveAt(i);
@@ -460,7 +467,7 @@ namespace BomberMan
 
                             player1points = player1points + 300;
                             breakWalls.RemoveAt(j);
-                            j--;
+                           
                             explosionplayer[i] = "p3";
 
                         }
@@ -469,7 +476,7 @@ namespace BomberMan
 
                             player2points = player2points + 300;
                             breakWalls.RemoveAt(j);
-                            j--;
+                            
                             explosionplayer[i] = "p3";
                         }
                         if (player1.IntersectsWith(explosion[i]))
@@ -692,8 +699,9 @@ namespace BomberMan
             explosionplayer.Clear();
             bombtime.Clear();
             bombplayer.Clear();
-            check = 0;
-            check2 = 0;
+            check.Clear();
+           // check = 0;
+           // check2 = 0;
             bombcheck = 0;
             bombcheck2 = 0;
             timer = 0;
@@ -884,7 +892,7 @@ namespace BomberMan
 
         private void startButton_Click(object sender, EventArgs e)
         {
-            TitleLabel.Visible = false;
+        //    TitleLabel.Visible = false;
             initializeGame();
             
         }
